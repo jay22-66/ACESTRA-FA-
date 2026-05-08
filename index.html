@@ -3,1460 +3,237 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ACESTRA FA — Wiki FiveM</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Exo+2:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>Acestra Wiki</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+
 <style>
-  :root {
-    --bg-deep: #070810;
-    --bg-main: #0d0f1a;
-    --bg-card: #111320;
-    --bg-card2: #161928;
-    --bg-nav: #0a0c17;
-    --accent: #e8b84b;
-    --accent2: #f0c96a;
-    --accent-dim: rgba(232,184,75,0.12);
-    --accent-glow: rgba(232,184,75,0.25);
-    --border: rgba(232,184,75,0.15);
-    --border-strong: rgba(232,184,75,0.35);
-    --text-primary: #f0eee8;
-    --text-secondary: #9a9580;
-    --text-muted: #5a5648;
-    --red: #e84b4b;
-    --green: #4be87a;
-    --blue: #4b8be8;
-    --sidebar-w: 270px;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg-deep);
-    color: var(--text-primary);
-    font-family: 'Exo 2', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* ─── SCANLINES OVERLAY ─── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.04) 2px, rgba(0,0,0,0.04) 4px);
-    pointer-events: none;
-    z-index: 9999;
-  }
-
-  /* ─── SIDEBAR ─── */
-  .sidebar {
-    position: fixed;
-    left: 0; top: 0; bottom: 0;
-    width: var(--sidebar-w);
-    background: var(--bg-nav);
-    border-right: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-    overflow-y: auto;
-  }
-
-  .sidebar-logo {
-    padding: 28px 24px 20px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .sidebar-logo::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 20px; right: 20px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  }
-
-  .logo-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 10px;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid var(--border-strong);
-    padding: 2px 8px;
-    border-radius: 2px;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    text-transform: uppercase;
-  }
-
-  .logo-name {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    line-height: 1;
-  }
-
-  .logo-sub {
-    font-size: 11px;
-    color: var(--text-muted);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-top: 4px;
-    font-family: 'Share Tech Mono', monospace;
-  }
-
-  .nav-section {
-    padding: 16px 12px 4px;
-  }
-
-  .nav-section-label {
-    font-size: 9px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-family: 'Share Tech Mono', monospace;
-    padding: 0 12px;
-    margin-bottom: 6px;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.15s;
-    font-size: 13px;
-    color: var(--text-secondary);
-    text-decoration: none;
-    position: relative;
-    border: 1px solid transparent;
-  }
-
-  .nav-item:hover {
-    background: var(--accent-dim);
-    color: var(--accent);
-    border-color: var(--border);
-  }
-
-  .nav-item.active {
-    background: var(--accent-dim);
-    color: var(--accent);
-    border-color: var(--border-strong);
-  }
-
-  .nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 4px; bottom: 4px;
-    width: 2px;
-    background: var(--accent);
-    border-radius: 0 2px 2px 0;
-  }
-
-  .nav-icon {
-    font-size: 14px;
-    width: 16px;
-    text-align: center;
-    opacity: 0.8;
-  }
-
-  .nav-children {
-    margin-left: 18px;
-    border-left: 1px solid var(--border);
-    padding-left: 4px;
-  }
-
-  .nav-children .nav-item {
-    font-size: 12px;
-  }
-
-  .sidebar-footer {
-    margin-top: auto;
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    color: var(--text-muted);
-    letter-spacing: 1px;
-  }
-
-  .status-dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--green);
-    box-shadow: 0 0 6px var(--green);
-    margin-right: 6px;
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.4; }
-  }
-
-  /* ─── MAIN CONTENT ─── */
-  .main {
-    margin-left: var(--sidebar-w);
-    min-height: 100vh;
-  }
-
-  /* ─── TOPBAR ─── */
-  .topbar {
-    height: 52px;
-    background: var(--bg-nav);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    padding: 0 32px;
-    gap: 16px;
-    position: sticky;
-    top: 0;
-    z-index: 50;
-  }
-
-  .breadcrumb {
-    font-size: 12px;
-    color: var(--text-muted);
-    font-family: 'Share Tech Mono', monospace;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .breadcrumb span { color: var(--accent); }
-
-  .topbar-right {
-    margin-left: auto;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .tag {
-    font-size: 10px;
-    font-family: 'Share Tech Mono', monospace;
-    padding: 3px 8px;
-    border-radius: 2px;
-    border: 1px solid;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-  }
-
-  .tag-gold { color: var(--accent); border-color: var(--border-strong); background: var(--accent-dim); }
-  .tag-green { color: var(--green); border-color: rgba(75,232,122,0.3); background: rgba(75,232,122,0.08); }
-  .tag-red { color: var(--red); border-color: rgba(232,75,75,0.3); background: rgba(232,75,75,0.08); }
-  .tag-blue { color: var(--blue); border-color: rgba(75,139,232,0.3); background: rgba(75,139,232,0.08); }
-
-  /* ─── CONTENT AREA ─── */
-  .content {
-    padding: 40px 48px;
-    max-width: 900px;
-  }
-
-  .page { display: none; }
-  .page.active { display: block; }
-
-  /* ─── HERO SECTION ─── */
-  .hero {
-    text-align: center;
-    padding: 20px 0 48px;
-    position: relative;
-  }
-
-  .hero::before {
-    content: 'ACESTRA FA';
-    position: absolute;
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 120px;
-    font-weight: 700;
-    color: rgba(232,184,75,0.03);
-    letter-spacing: 8px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .hero-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 5px;
-    color: var(--accent);
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .hero-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 52px;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 6px;
-    text-transform: uppercase;
-    line-height: 1;
-    margin-bottom: 8px;
-  }
-
-  .hero-sub {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px;
-    font-weight: 400;
-    color: var(--text-secondary);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    margin-bottom: 32px;
-  }
-
-  .hero-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    margin-bottom: 36px;
-  }
-
-  .hero-divider-line {
-    height: 1px;
-    width: 80px;
-    background: linear-gradient(90deg, transparent, var(--accent));
-  }
-
-  .hero-divider-line.right {
-    background: linear-gradient(90deg, var(--accent), transparent);
-  }
-
-  .hero-divider-diamond {
-    width: 6px; height: 6px;
-    background: var(--accent);
-    transform: rotate(45deg);
-  }
-
-  /* ─── CARDS GRID ─── */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin: 32px 0;
-  }
-
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px 22px;
-    cursor: pointer;
-    transition: all 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-
-  .card:hover {
-    border-color: var(--border-strong);
-    background: var(--bg-card2);
-  }
-
-  .card:hover::before { opacity: 1; }
-
-  .card-icon {
-    font-size: 22px;
-    margin-bottom: 10px;
-  }
-
-  .card-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 6px;
-  }
-
-  .card-desc {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  .card-arrow {
-    position: absolute;
-    bottom: 16px;
-    right: 16px;
-    color: var(--text-muted);
-    font-size: 16px;
-    transition: all 0.2s;
-  }
-
-  .card:hover .card-arrow {
-    color: var(--accent);
-    transform: translateX(3px);
-  }
-
-  /* ─── PAGE HEADER ─── */
-  .page-header {
-    margin-bottom: 36px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-    position: relative;
-  }
-
-  .page-header::after {
-    content: '';
-    position: absolute;
-    bottom: -1px; left: 0; right: 60%;
-    height: 1px;
-    background: linear-gradient(90deg, var(--accent), transparent);
-  }
-
-  .page-category {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 8px;
-  }
-
-  .page-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 34px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-  }
-
-  .page-title span { color: var(--accent); }
-
-  .page-intro {
-    font-size: 14px;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    max-width: 600px;
-  }
-
-  /* ─── SECTION ─── */
-  .section {
-    margin-bottom: 36px;
-  }
-
-  .section-title {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 16px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ─── RULES ─── */
-  .rule-block {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 16px 20px;
-    margin-bottom: 10px;
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    transition: border-color 0.15s;
-  }
-
-  .rule-block:hover { border-color: var(--border-strong); }
-
-  .rule-num {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid var(--border);
-    padding: 2px 6px;
-    border-radius: 2px;
-    min-width: 32px;
-    text-align: center;
-    flex-shrink: 0;
-    margin-top: 2px;
-  }
-
-  .rule-content { flex: 1; }
-
-  .rule-title {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-    letter-spacing: 0.5px;
-  }
-
-  .rule-text {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.65;
-  }
-
-  /* ─── WARNING / INFO BLOCKS ─── */
-  .alert {
-    border-radius: 4px;
-    padding: 14px 18px;
-    margin: 16px 0;
-    display: flex;
-    gap: 12px;
-    align-items: flex-start;
-    border: 1px solid;
-    font-size: 13px;
-    line-height: 1.6;
-  }
-
-  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-
-  .alert-warn {
-    background: rgba(232,184,75,0.06);
-    border-color: rgba(232,184,75,0.25);
-    color: var(--accent2);
-  }
-
-  .alert-danger {
-    background: rgba(232,75,75,0.06);
-    border-color: rgba(232,75,75,0.25);
-    color: #f07070;
-  }
-
-  .alert-info {
-    background: rgba(75,139,232,0.06);
-    border-color: rgba(75,139,232,0.25);
-    color: #7aaaf0;
-  }
-
-  .alert-success {
-    background: rgba(75,232,122,0.06);
-    border-color: rgba(75,232,122,0.25);
-    color: #70e090;
-  }
-
-  /* ─── LEXIQUE ─── */
-  .lexique-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-  }
-
-  .lex-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 12px 16px;
-  }
-
-  .lex-term {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-
-  .lex-def {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.5;
-  }
-
-  /* ─── SANCTION TABLE ─── */
-  .sanction-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    margin-top: 8px;
-  }
-
-  .sanction-table th {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    padding: 8px 12px;
-    text-align: left;
-    border-bottom: 1px solid var(--border);
-    background: var(--bg-card);
-  }
-
-  .sanction-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(232,184,75,0.06);
-    color: var(--text-secondary);
-    vertical-align: top;
-  }
-
-  .sanction-table tr:hover td {
-    background: var(--accent-dim);
-    color: var(--text-primary);
-  }
-
-  .sanction-table td:first-child { color: var(--text-primary); font-weight: 500; }
-
-  .sev-1 { color: var(--accent) !important; }
-  .sev-2 { color: #e8a04b !important; }
-  .sev-3 { color: var(--red) !important; }
-
-  /* ─── CONNECT METHOD ─── */
-  .method-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 20px 24px;
-    margin-bottom: 14px;
-  }
-
-  .method-number {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    letter-spacing: 3px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    margin-bottom: 10px;
-  }
-
-  .method-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 12px;
-  }
-
-  .step {
-    display: flex;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 8px;
-  }
-
-  .step-n {
-    width: 20px; height: 20px;
-    border-radius: 50%;
-    background: var(--accent-dim);
-    border: 1px solid var(--border-strong);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 10px;
-    font-family: 'Share Tech Mono', monospace;
-    color: var(--accent);
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-
-  .step-text {
-    font-size: 13px;
-    color: var(--text-secondary);
-    line-height: 1.6;
-  }
-
-  .code-inline {
-    font-family: 'Share Tech Mono', monospace;
-    background: rgba(232,184,75,0.1);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 1px 6px;
-    font-size: 12px;
-    color: var(--accent2);
-  }
-
-  /* ─── SEPARATOR ─── */
-  .sep {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin: 32px 0;
-    color: var(--text-muted);
-    font-size: 10px;
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 2px;
-  }
-
-  .sep::before, .sep::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  /* ─── ORG CRIMINELLE ─── */
-  .org-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--red);
-    border-radius: 0 4px 4px 0;
-    padding: 16px 20px;
-    margin-bottom: 12px;
-  }
-
-  .org-name {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #e87070;
-    margin-bottom: 6px;
-  }
-
-  .org-text {
-    font-size: 12px;
-    color: var(--text-secondary);
-    line-height: 1.65;
-  }
-
-  /* ─── BOUTIQUE ─── */
-  .boutique-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    margin-top: 8px;
-  }
-
-  .boutique-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 16px;
-    text-align: center;
-    transition: all 0.2s;
-  }
-
-  .boutique-item:hover {
-    border-color: var(--border-strong);
-    background: var(--bg-card2);
-  }
-
-  .boutique-emoji { font-size: 24px; margin-bottom: 8px; }
-
-  .boutique-name {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-primary);
-    letter-spacing: 1px;
-    margin-bottom: 4px;
-  }
-
-  .boutique-price {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 13px;
-    color: var(--accent);
-  }
-
-  /* ─── SCROLLBAR ─── */
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg-main); }
-  ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #0b0f1a;
+  color: #e2e8f0;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  background: #0f172a;
+  padding: 20px;
+  border-right: 1px solid #1e293b;
+}
+
+.sidebar h2 {
+  color: #38bdf8;
+  margin-bottom: 20px;
+}
+
+.sidebar a {
+  display: block;
+  padding: 10px;
+  color: #94a3b8;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-bottom: 5px;
+}
+
+.sidebar a:hover {
+  background: #1e293b;
+  color: white;
+}
+
+/* MAIN */
+.main {
+  margin-left: 270px;
+  padding: 40px;
+}
+
+/* HERO */
+.hero {
+  background: linear-gradient(135deg, #0ea5ff, #1e3a8a);
+  padding: 60px;
+  border-radius: 20px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 70px;
+  color: #7dd3fc;
+  margin: 0;
+}
+
+.hero p {
+  opacity: 0.8;
+}
+
+/* SECTION */
+.section {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 26px;
+  margin-bottom: 20px;
+  color: #38bdf8;
+}
+
+/* CARDS */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: #111827;
+  padding: 20px;
+  border-radius: 14px;
+  border: 1px solid #1f2937;
+  transition: 0.2s;
+}
+
+.card:hover {
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* EVENT BLOCK */
+.event {
+  background: #111827;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid #1f2937;
+  margin-bottom: 15px;
+}
+
+.tag {
+  background: #1e3a8a;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  color: #7dd3fc;
+}
+
+/* ALERT */
+.alert {
+  background: #1e293b;
+  border-left: 4px solid #38bdf8;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+}
 </style>
 </head>
+
 <body>
 
 <!-- SIDEBAR -->
-<nav class="sidebar">
-  <div class="sidebar-logo">
-    <div class="logo-badge">▶ wiki v1.0</div>
-    <div class="logo-name">ACESTRA FA</div>
-    <div class="logo-sub">FiveM Roleplay</div>
-  </div>
+<div class="sidebar">
+  <h2>ACESTRA WIKI</h2>
 
-  <div class="nav-section">
-    <div class="nav-section-label">Accueil</div>
-    <a class="nav-item active" onclick="showPage('home')" href="javascript:void(0)">
-      <span class="nav-icon">⌂</span> Présentation
-    </a>
-  </div>
+  <a href="#">🏠 Accueil</a>
 
-  <div class="nav-section">
-    <div class="nav-section-label">Wiki · Règlements</div>
-    <a class="nav-item" onclick="showPage('hrp')" href="javascript:void(0)">
-      <span class="nav-icon">◈</span> Règlement HRP
-    </a>
-    <div class="nav-children">
-      <a class="nav-item" onclick="showPage('hrp-gen')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Généralités
-      </a>
-      <a class="nav-item" onclick="showPage('hrp-ticket')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Tickets
-      </a>
-      <a class="nav-item" onclick="showPage('hrp-sanction')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Sanctions
-      </a>
-      <a class="nav-item" onclick="showPage('hrp-discord')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Discord
-      </a>
-    </div>
-    <a class="nav-item" onclick="showPage('global')" href="javascript:void(0)">
-      <span class="nav-icon">◈</span> Règlement Global
-    </a>
-    <div class="nav-children">
-      <a class="nav-item" onclick="showPage('lexique')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Lexique RP
-      </a>
-      <a class="nav-item" onclick="showPage('notions')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Notions de base
-      </a>
-      <a class="nav-item" onclick="showPage('regles')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Règles basiques
-      </a>
-    </div>
-    <a class="nav-item" onclick="showPage('legal')" href="javascript:void(0)">
-      <span class="nav-icon">◈</span> Règlement Légal
-    </a>
-    <div class="nav-children">
-      <a class="nav-item" onclick="showPage('legal-gen')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Principes Généraux
-      </a>
-      <a class="nav-item" onclick="showPage('legal-massrp')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> MassRP
-      </a>
-      <a class="nav-item" onclick="showPage('legal-entreprise')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Entreprise
-      </a>
-    </div>
-    <a class="nav-item" onclick="showPage('illegal')" href="javascript:void(0)">
-      <span class="nav-icon">◈</span> Règlement Illégal
-    </a>
-    <div class="nav-children">
-      <a class="nav-item" onclick="showPage('illegal-gen')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Principes Généraux
-      </a>
-      <a class="nav-item" onclick="showPage('illegal-org')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Organisations
-      </a>
-      <a class="nav-item" onclick="showPage('illegal-events')" href="javascript:void(0)">
-        <span class="nav-icon">›</span> Events
-      </a>
-    </div>
-  </div>
+  <h4>📘 Règlements</h4>
+  <a href="#">Règlement HRP</a>
+  <a href="#">Règlement Global</a>
+  <a href="#">Règlement Légal</a>
+  <a href="#">Règlement Illégal</a>
 
-  <div class="nav-section">
-    <div class="nav-section-label">Guide</div>
-    <a class="nav-item" onclick="showPage('connect')" href="javascript:void(0)">
-      <span class="nav-icon">▶</span> Se connecter
-    </a>
-    <a class="nav-item" onclick="showPage('bugs')" href="javascript:void(0)">
-      <span class="nav-icon">⚠</span> Résolution de bugs
-    </a>
-    <a class="nav-item" onclick="showPage('boutique')" href="javascript:void(0)">
-      <span class="nav-icon">◆</span> Boutique
-    </a>
-  </div>
+  <h4>📌 Guide</h4>
+  <a href="#">Se connecter</a>
+  <a href="#">Boutique</a>
+  <a href="#">Support</a>
+</div>
 
-  <div class="sidebar-footer">
-    <span class="status-dot"></span>SERVEUR EN LIGNE<br>
-    <span style="opacity:0.4; margin-left:12px">ACESTRA FA · 2025</span>
-  </div>
-</nav>
-
-<!-- TOPBAR -->
+<!-- MAIN -->
 <div class="main">
-  <div class="topbar">
-    <div class="breadcrumb" id="breadcrumb">
-      ACESTRA FA <span>›</span> <span id="bc-page">Accueil</span>
-    </div>
-    <div class="topbar-right">
-      <span class="tag tag-green">SERVEUR ACTIF</span>
-      <span class="tag tag-gold">FiveM RP</span>
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>ACESTRA</h1>
+    <p>ROLEPLAY</p>
+  </div>
+
+  <!-- ACCUEIL -->
+  <div class="section">
+    <div class="section-title">Accueil</div>
+
+    <div class="grid">
+      <div class="card">📘 Règlement HRP</div>
+      <div class="card">🌍 Règlement Global</div>
+      <div class="card">⚖️ Règlement Légal</div>
+      <div class="card">🔫 Règlement Illégal</div>
     </div>
   </div>
 
-  <div class="content">
+  <!-- HRP -->
+  <div class="section">
+    <div class="section-title">Règlement HRP</div>
 
-    <!-- ═══════════════════════════════════════════
-         HOME
-    ════════════════════════════════════════════ -->
-    <div class="page active" id="page-home">
-      <div class="hero">
-        <div class="hero-tag">▶ Bienvenue sur le wiki officiel</div>
-        <div class="hero-title">ACESTRA FA</div>
-        <div class="hero-sub">FiveM Roleplay Server</div>
-        <div class="hero-divider">
-          <div class="hero-divider-line"></div>
-          <div class="hero-divider-diamond"></div>
-          <div class="hero-divider-line right"></div>
-        </div>
-        <p style="font-size:14px; color:var(--text-secondary); max-width:500px; margin:0 auto; line-height:1.7;">
-          Bienvenue sur le wiki officiel d'<strong style="color:var(--accent)">ACESTRA FA</strong>, votre serveur FiveM Roleplay. Retrouvez ici tous les règlements, guides et informations nécessaires pour vivre pleinement l'expérience RP.
-        </p>
-      </div>
-
-      <div class="sep">WIKI · RÈGLEMENTS</div>
-
-      <div class="cards-grid">
-        <div class="card" onclick="showPage('hrp')">
-          <div class="card-icon">◈</div>
-          <div class="card-title">Règlement HRP</div>
-          <div class="card-desc">Règles hors roleplay, gestion des tickets, sanctions et conduite sur le Discord.</div>
-          <div class="card-arrow">→</div>
-        </div>
-        <div class="card" onclick="showPage('global')">
-          <div class="card-icon">◈</div>
-          <div class="card-title">Règlement Global</div>
-          <div class="card-desc">Lexique RP, notions de base du roleplay et règles fondamentales du serveur.</div>
-          <div class="card-arrow">→</div>
-        </div>
-        <div class="card" onclick="showPage('legal')">
-          <div class="card-icon">◈</div>
-          <div class="card-title">Règlement Légal</div>
-          <div class="card-desc">Principes généraux du côté légal, MassRP et gestion des entreprises RP.</div>
-          <div class="card-arrow">→</div>
-        </div>
-        <div class="card" onclick="showPage('illegal')">
-          <div class="card-icon">◈</div>
-          <div class="card-title">Règlement Illégal</div>
-          <div class="card-desc">Règles pour les organisations criminelles, events illégaux et activités interdites.</div>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-
-      <div class="sep">GUIDES</div>
-
-      <div class="cards-grid">
-        <div class="card" onclick="showPage('connect')">
-          <div class="card-icon">▶</div>
-          <div class="card-title">Se connecter</div>
-          <div class="card-desc">Comment rejoindre le serveur ACESTRA FA via FiveM.</div>
-          <div class="card-arrow">→</div>
-        </div>
-        <div class="card" onclick="showPage('bugs')">
-          <div class="card-icon">⚠</div>
-          <div class="card-title">Résolution de bugs</div>
-          <div class="card-desc">Problèmes de connexion, erreurs courantes et solutions recommandées.</div>
-          <div class="card-arrow">→</div>
-        </div>
-        <div class="card" onclick="showPage('boutique')">
-          <div class="card-icon">◆</div>
-          <div class="card-title">Boutique</div>
-          <div class="card-desc">Grades, avantages et items disponibles sur la boutique du serveur.</div>
-          <div class="card-arrow">→</div>
-        </div>
-      </div>
-
-      <div class="alert alert-warn">
-        <span class="alert-icon">⚠</span>
-        <div>Tout joueur présent sur le serveur est considéré comme ayant lu et accepté l'intégralité des règlements d'<strong>ACESTRA FA</strong>. L'ignorance des règles n'est pas une excuse.</div>
-      </div>
+    <div class="event">
+      Respect obligatoire entre joueurs
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         RÈGLEMENT HRP
-    ════════════════════════════════════════════ -->
-    <div class="page" id="page-hrp">
-      <div class="page-header">
-        <div class="page-category">Wiki · Règlements</div>
-        <div class="page-title"><span>Règlement</span> HRP</div>
-        <div class="page-intro">L'ensemble des règles hors roleplay qui régissent le comportement des joueurs sur ACESTRA FA. Ces règles s'appliquent en dehors de l'univers RP.</div>
-      </div>
-      <div class="cards-grid">
-        <div class="card" onclick="showPage('hrp-gen')"><div class="card-title">Généralités</div><div class="card-desc">Règles fondamentales HRP applicables à tous.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('hrp-ticket')"><div class="card-title">Tickets</div><div class="card-desc">Comment ouvrir et gérer un ticket de support.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('hrp-sanction')"><div class="card-title">Sanctions</div><div class="card-desc">Barème des sanctions en cas d'infraction.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('hrp-discord')"><div class="card-title">Discord</div><div class="card-desc">Règles de conduite sur le Discord officiel.</div><div class="card-arrow">→</div></div>
-      </div>
+    <div class="event">
+      Aucun comportement toxique
+    </div>
+  </div>
+
+  <!-- GLOBAL -->
+  <div class="section">
+    <div class="section-title">Règlement Global</div>
+
+    <div class="event">
+      Respect du roleplay réaliste
     </div>
 
-    <!-- HRP GENERALITES -->
-    <div class="page" id="page-hrp-gen">
-      <div class="page-header">
-        <div class="page-category">HRP › Généralités</div>
-        <div class="page-title">Généralités <span>HRP</span></div>
-        <div class="page-intro">Les règles de base s'appliquant à tout joueur présent sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Règles Fondamentales</div>
-        <div class="rule-block"><div class="rule-num">01</div><div class="rule-content"><div class="rule-title">Respect des joueurs et du staff</div><div class="rule-text">Tout joueur doit faire preuve de respect envers les autres membres de la communauté et l'équipe de modération. Les insultes, le harcèlement et la discrimination sont strictement interdits.</div></div></div>
-        <div class="rule-block"><div class="rule-num">02</div><div class="rule-content"><div class="rule-title">Identité unique</div><div class="rule-text">Un joueur = un personnage. La création de plusieurs comptes pour contourner des sanctions est interdite et entraîne un bannissement définitif.</div></div></div>
-        <div class="rule-block"><div class="rule-num">03</div><div class="rule-content"><div class="rule-title">Interdiction des cheats et exploits</div><div class="rule-text">L'utilisation de tout programme externe, cheat, glitch ou exploit pour obtenir un avantage est formellement interdite et entraîne un ban permanent sans appel.</div></div></div>
-        <div class="rule-block"><div class="rule-num">04</div><div class="rule-content"><div class="rule-title">Communication HRP en jeu</div><div class="rule-text">Toute communication hors roleplay en jeu doit être balisée avec la mention (( )). Les discussions HRP doivent rester minimales et ne pas perturber le RP en cours.</div></div></div>
-        <div class="rule-block"><div class="rule-num">05</div><div class="rule-content"><div class="rule-title">Recrutement interdit</div><div class="rule-text">Le recrutement pour d'autres serveurs au sein de la communauté ACESTRA FA est strictement interdit et entraîne un bannissement immédiat.</div></div></div>
-      </div>
-      <div class="alert alert-info">
-        <span class="alert-icon">ℹ</span>
-        <div>En cas de litige ou de situation non couverte par le règlement, le staff d'ACESTRA FA se réserve le droit de prendre toute décision jugée appropriée dans l'intérêt de la communauté.</div>
-      </div>
+    <div class="event">
+      Interdiction du metagaming
+    </div>
+  </div>
+
+  <!-- LEGAL -->
+  <div class="section">
+    <div class="section-title">Règlement Légal</div>
+
+    <div class="event">
+      Respect des forces de l'ordre
     </div>
 
-    <!-- HRP TICKET -->
-    <div class="page" id="page-hrp-ticket">
-      <div class="page-header">
-        <div class="page-category">HRP › Tickets</div>
-        <div class="page-title">Règlement <span>Tickets</span></div>
-        <div class="page-intro">Le système de tickets est le seul moyen officiel de contacter le staff d'ACESTRA FA pour signaler un problème ou faire une demande.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Utilisation des Tickets</div>
-        <div class="rule-block"><div class="rule-num">T1</div><div class="rule-content"><div class="rule-title">Ticket = canal officiel</div><div class="rule-text">Toute demande au staff (signalement, plainte, demande de récupération, contestation de sanction) doit obligatoirement passer par le système de tickets Discord.</div></div></div>
-        <div class="rule-block"><div class="rule-num">T2</div><div class="rule-content"><div class="rule-title">Un ticket = un sujet</div><div class="rule-text">Chaque ticket doit traiter un seul et unique sujet. Ne pas ouvrir plusieurs tickets pour la même problématique.</div></div></div>
-        <div class="rule-block"><div class="rule-num">T3</div><div class="rule-content"><div class="rule-title">Preuves obligatoires</div><div class="rule-text">Tout signalement doit être accompagné de preuves (captures d'écran, vidéos). Un ticket sans preuve sera fermé automatiquement.</div></div></div>
-        <div class="rule-block"><div class="rule-num">T4</div><div class="rule-content"><div class="rule-title">Délai de réponse</div><div class="rule-text">Le staff traitera votre ticket dans les meilleurs délais. Ne pas relancer plusieurs fois sous peine de fermeture du ticket.</div></div></div>
-        <div class="rule-block"><div class="rule-num">T5</div><div class="rule-content"><div class="rule-title">Abus de tickets</div><div class="rule-text">L'ouverture abusive de tickets non justifiés ou à titre de provocation entraîne des sanctions allant jusqu'au mute Discord.</div></div></div>
-      </div>
-      <div class="alert alert-warn">
-        <span class="alert-icon">⚠</span>
-        <div>Contacter un membre du staff en MP pour des questions relatives aux règlements ou sanctions est interdit. Passez toujours par le système de tickets.</div>
-      </div>
+    <div class="event">
+      Comportement citoyen obligatoire
+    </div>
+  </div>
+
+  <!-- ILLEGAL -->
+  <div class="section">
+    <div class="section-title">Events Illégaux</div>
+
+    <div class="event">
+      <span class="tag">EV1</span> Braquages — max 6 criminels
     </div>
 
-    <!-- HRP SANCTION -->
-    <div class="page" id="page-hrp-sanction">
-      <div class="page-header">
-        <div class="page-category">HRP › Sanctions</div>
-        <div class="page-title">Barème des <span>Sanctions</span></div>
-        <div class="page-intro">Les sanctions appliquées sur ACESTRA FA sont progressives. Le staff se réserve le droit d'adapter la sanction selon la gravité de la situation.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Tableau des Sanctions</div>
-        <table class="sanction-table">
-          <thead>
-            <tr>
-              <th>Infraction</th>
-              <th>1ère fois</th>
-              <th>Récidive</th>
-              <th>Gravité</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Langage irrespectueux</td><td>Avertissement</td><td>Kick / Mute</td><td class="sev-1">Faible</td></tr>
-            <tr><td>BreakRP mineur</td><td>Avertissement</td><td>Kick</td><td class="sev-1">Faible</td></tr>
-            <tr><td>BreakRP grave</td><td>Kick + warn</td><td>Ban 24h</td><td class="sev-2">Moyen</td></tr>
-            <tr><td>Metagaming</td><td>Warn + kick</td><td>Ban 3 jours</td><td class="sev-2">Moyen</td></tr>
-            <tr><td>Powergaming</td><td>Warn + kick</td><td>Ban 3 jours</td><td class="sev-2">Moyen</td></tr>
-            <tr><td>Harcèlement</td><td>Ban 7 jours</td><td>Ban définitif</td><td class="sev-3">Élevé</td></tr>
-            <tr><td>Cheat / Exploit</td><td>Ban définitif</td><td>—</td><td class="sev-3">Critique</td></tr>
-            <tr><td>Multi-comptes</td><td>Ban définitif</td><td>—</td><td class="sev-3">Critique</td></tr>
-            <tr><td>Recrutement ext.</td><td>Ban définitif</td><td>—</td><td class="sev-3">Critique</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="alert alert-danger">
-        <span class="alert-icon">✕</span>
-        <div>Les sanctions peuvent être aggravées selon le contexte, l'attitude du joueur ou l'accumulation d'infractions. Tout ban peut être contesté via un ticket de contestation dans les 48h.</div>
-      </div>
+    <div class="event">
+      <span class="tag">EV2</span> Convois & assassinats (ticket requis)
     </div>
 
-    <!-- HRP DISCORD -->
-    <div class="page" id="page-hrp-discord">
-      <div class="page-header">
-        <div class="page-category">HRP › Discord</div>
-        <div class="page-title">Règlement <span>Discord</span></div>
-        <div class="page-intro">Les règles de conduite s'appliquant sur le serveur Discord officiel d'ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Règles du Discord</div>
-        <div class="rule-block"><div class="rule-num">D1</div><div class="rule-content"><div class="rule-title">Respect absolu</div><div class="rule-text">Le respect est obligatoire envers tous les membres, qu'il s'agisse de joueurs, de staff ou d'invités. Tout comportement irrespectueux sera sanctionné.</div></div></div>
-        <div class="rule-block"><div class="rule-num">D2</div><div class="rule-content"><div class="rule-title">Contenu approprié</div><div class="rule-text">Il est interdit de partager du contenu choquant, sexuellement explicite, illégal ou portant atteinte à la dignité d'une personne.</div></div></div>
-        <div class="rule-block"><div class="rule-num">D3</div><div class="rule-content"><div class="rule-title">Pas de spam</div><div class="rule-text">Le spam de messages, d'images, de mentions ou de sons en vocal est interdit. Chaque salon a un usage précis — respectez-le.</div></div></div>
-        <div class="rule-block"><div class="rule-num">D4</div><div class="rule-content"><div class="rule-title">Pseudonyme lisible</div><div class="rule-text">Votre pseudo Discord doit être lisible (caractères standards) et correspondre au nom RP de votre personnage principal.</div></div></div>
-        <div class="rule-block"><div class="rule-num">D5</div><div class="rule-content"><div class="rule-title">Politique & Religion</div><div class="rule-text">Les discussions politiques, religieuses ou de nature à créer des conflits sont interdites sur le Discord.</div></div></div>
-      </div>
+    <div class="event">
+      <span class="tag">EV3</span> Conflits organisés (3v3 max)
     </div>
 
-    <!-- ═══════════════════════════════════════════
-         RÈGLEMENT GLOBAL
-    ════════════════════════════════════════════ -->
-    <div class="page" id="page-global">
-      <div class="page-header">
-        <div class="page-category">Wiki · Règlements</div>
-        <div class="page-title">Règlement <span>Global</span></div>
-        <div class="page-intro">Les règles générales du roleplay applicables à tous les joueurs d'ACESTRA FA, peu importe leur rôle ou affiliation RP.</div>
-      </div>
-      <div class="cards-grid">
-        <div class="card" onclick="showPage('lexique')"><div class="card-title">Lexique RP</div><div class="card-desc">Définitions des termes et abréviations utilisés en RP.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('notions')"><div class="card-title">Notions de Base</div><div class="card-desc">Fondamentaux du roleplay que tout joueur doit maîtriser.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('regles')"><div class="card-title">Règles Basiques</div><div class="card-desc">Règles essentielles de jeu sur ACESTRA FA.</div><div class="card-arrow">→</div></div>
-      </div>
+    <div class="event">
+      <span class="tag">EV4</span> Conséquences RP obligatoires
     </div>
 
-    <!-- LEXIQUE -->
-    <div class="page" id="page-lexique">
-      <div class="page-header">
-        <div class="page-category">Global › Lexique</div>
-        <div class="page-title">Lexique <span>RP</span></div>
-        <div class="page-intro">Glossaire des termes et abréviations utilisés dans le milieu du roleplay FiveM.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Termes Essentiels</div>
-        <div class="lexique-grid">
-          <div class="lex-item"><div class="lex-term">RP · Roleplay</div><div class="lex-def">Le fait d'incarner un personnage et d'agir selon sa personnalité et sa situation dans l'univers fictif.</div></div>
-          <div class="lex-item"><div class="lex-term">HRP · Hors Roleplay</div><div class="lex-def">Tout ce qui se passe en dehors du jeu de rôle, dans la réalité du joueur.</div></div>
-          <div class="lex-item"><div class="lex-term">Break RP</div><div class="lex-def">Action de sortir de son personnage sans raison valable, brisant l'immersion de la scène.</div></div>
-          <div class="lex-item"><div class="lex-term">Metagaming</div><div class="lex-def">Utilisation d'informations obtenues hors RP (Discord, stream, etc.) pour avantager son personnage en jeu.</div></div>
-          <div class="lex-item"><div class="lex-term">Powergaming</div><div class="lex-def">Forcer des actions irréalistes ou ne pas laisser aux autres joueurs la possibilité de réagir.</div></div>
-          <div class="lex-item"><div class="lex-term">Deathmatching / DM</div><div class="lex-def">Tuer ou blesser un joueur sans contexte RP valable et sans interaction préalable.</div></div>
-          <div class="lex-item"><div class="lex-term">Fear RP</div><div class="lex-def">Jouer la peur de son personnage de façon réaliste. Sous menace d'arme, un personnage doit craindre pour sa vie.</div></div>
-          <div class="lex-item"><div class="lex-term">CK · Character Kill</div><div class="lex-def">Mort permanente d'un personnage. Nécessite l'accord des deux parties ou une décision du staff.</div></div>
-          <div class="lex-item"><div class="lex-term">NLR · New Life Rule</div><div class="lex-def">Après une mort RP, le personnage ne se souvient pas des 30 dernières minutes précédant son décès.</div></div>
-          <div class="lex-item"><div class="lex-term">OOC · Out Of Character</div><div class="lex-def">En dehors du personnage. Synonyme de HRP dans le contexte FiveM.</div></div>
-          <div class="lex-item"><div class="lex-term">IC · In Character</div><div class="lex-def">Dans le personnage. Tout ce que votre avatar vit, ressent et sait dans l'univers de jeu.</div></div>
-          <div class="lex-item"><div class="lex-term">Mass RDM</div><div class="lex-def">Tuer ou blesser un grand nombre de joueurs sans scénario RP justifié.</div></div>
-        </div>
-      </div>
+    <div class="alert">
+      Les gros events doivent être validés par le staff.
     </div>
+  </div>
 
-    <!-- NOTIONS DE BASE -->
-    <div class="page" id="page-notions">
-      <div class="page-header">
-        <div class="page-category">Global › Notions</div>
-        <div class="page-title">Notions de <span>Base</span></div>
-        <div class="page-intro">Les principes fondamentaux du roleplay que tout joueur d'ACESTRA FA doit connaître et appliquer.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Principes du Roleplay</div>
-        <div class="rule-block"><div class="rule-num">N1</div><div class="rule-content"><div class="rule-title">Cohérence du personnage</div><div class="rule-text">Votre personnage doit avoir une histoire, une personnalité cohérente et agir selon sa logique propre. Un personnage incohérent nuit à l'immersion générale.</div></div></div>
-        <div class="rule-block"><div class="rule-num">N2</div><div class="rule-content"><div class="rule-title">Réalisme des actions</div><div class="rule-text">Toute action entreprise doit être réaliste et plausible dans l'univers RP. Aucune action physiquement impossible ne sera acceptée.</div></div></div>
-        <div class="rule-block"><div class="rule-num">N3</div><div class="rule-content"><div class="rule-title">Valeur de la vie</div><div class="rule-text">Votre personnage doit valoriser sa propre vie. Il ne prend pas de risques insensés, ne charge pas face à une arme braquée sur lui, et réagit de façon humaine face au danger.</div></div></div>
-        <div class="rule-block"><div class="rule-num">N4</div><div class="rule-content"><div class="rule-title">Interaction avant action</div><div class="rule-text">Avant toute action hostile ou significative envers un autre joueur, une interaction RP doit avoir lieu. On ne commence pas une scène par un coup ou un tir.</div></div></div>
-        <div class="rule-block"><div class="rule-num">N5</div><div class="rule-content"><div class="rule-title">Respect des scènes en cours</div><div class="rule-text">Ne pas interrompre volontairement une scène RP en cours sans y être invité. Chaque scène mérite d'être jouée jusqu'à son terme.</div></div></div>
-      </div>
-    </div>
+</div>
 
-    <!-- REGLES BASIQUES -->
-    <div class="page" id="page-regles">
-      <div class="page-header">
-        <div class="page-category">Global › Règles</div>
-        <div class="page-title">Règles <span>Basiques</span></div>
-        <div class="page-intro">L'ensemble des règles essentielles à respecter pour jouer sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Interdictions</div>
-        <div class="rule-block"><div class="rule-num">R1</div><div class="rule-content"><div class="rule-title">No Metagaming</div><div class="rule-text">Il est interdit d'utiliser toute information obtenue hors RP pour en faire bénéficier votre personnage. Cela inclut les streams, Discord hors-serveur, messages privés, etc.</div></div></div>
-        <div class="rule-block"><div class="rule-num">R2</div><div class="rule-content"><div class="rule-title">No Powergaming</div><div class="rule-text">Il est interdit de forcer des actions, d'ignorer les réactions des autres joueurs ou d'effectuer des actions physiquement impossibles pour votre personnage.</div></div></div>
-        <div class="rule-block"><div class="rule-num">R3</div><div class="rule-content"><div class="rule-title">No Combat Logging</div><div class="rule-text">Se déconnecter pour éviter une confrontation RP ou une arrestation est strictement interdit. Si la déconnexion est involontaire, vous devez reprendre la scène à votre retour.</div></div></div>
-        <div class="rule-block"><div class="rule-num">R4</div><div class="rule-content"><div class="rule-title">No VDM / RDM</div><div class="rule-text">Il est interdit de tuer ou de percuter des joueurs sans raison RP valable. Tout homicide doit avoir un contexte scénaristique sérieux.</div></div></div>
-        <div class="rule-block"><div class="rule-num">R5</div><div class="rule-content"><div class="rule-title">Zone Verte</div><div class="rule-text">Certaines zones sont désignées "zones vertes" (hôpitaux, spawn). Les actes hostiles y sont strictement interdits.</div></div></div>
-      </div>
-      <div class="alert alert-success">
-        <span class="alert-icon">✓</span>
-        <div>Un bon roleplay enrichit l'expérience de toute la communauté. Jouez toujours avec l'objectif de créer du contenu intéressant pour vous ET pour les autres.</div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         RÈGLEMENT LÉGAL
-    ════════════════════════════════════════════ -->
-    <div class="page" id="page-legal">
-      <div class="page-header">
-        <div class="page-category">Wiki · Règlements</div>
-        <div class="page-title">Règlement <span>Légal</span></div>
-        <div class="page-intro">Les règles encadrant le roleplay des personnages évoluant du côté légal — citoyens, entrepreneurs et services civils d'ACESTRA FA.</div>
-      </div>
-      <div class="cards-grid">
-        <div class="card" onclick="showPage('legal-gen')"><div class="card-title">Principes Généraux</div><div class="card-desc">Règles de base pour tous les personnages légaux.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('legal-massrp')"><div class="card-title">MassRP</div><div class="card-desc">Règles encadrant les rassemblements légaux de masse.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('legal-entreprise')"><div class="card-title">Entreprise</div><div class="card-desc">Création et gestion d'entreprises sur le serveur.</div><div class="card-arrow">→</div></div>
-      </div>
-    </div>
-
-    <!-- LEGAL GEN -->
-    <div class="page" id="page-legal-gen">
-      <div class="page-header">
-        <div class="page-category">Légal › Principes</div>
-        <div class="page-title">Principes <span>Généraux</span></div>
-        <div class="page-intro">Les fondements du roleplay légal sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Règles du Côté Légal</div>
-        <div class="rule-block"><div class="rule-num">L1</div><div class="rule-content"><div class="rule-title">Citoyenneté RP</div><div class="rule-text">Tout personnage légal doit jouer le rôle d'un citoyen respectueux des lois de l'univers RP. Cela inclut obtenir un permis de conduire, déclarer ses activités, etc.</div></div></div>
-        <div class="rule-block"><div class="rule-num">L2</div><div class="rule-content"><div class="rule-title">Interaction avec les forces de l'ordre</div><div class="rule-text">En cas de contrôle ou d'arrestation par les forces de l'ordre RP, un personnage légal doit coopérer de façon réaliste et ne pas fuir sans raison valable.</div></div></div>
-        <div class="rule-block"><div class="rule-num">L3</div><div class="rule-content"><div class="rule-title">Réalisme économique</div><div class="rule-text">Les gains d'argent doivent être RP-cohérents. Un personnage légal ne peut pas soudainement afficher une richesse inexpliquée sans background scénaristique.</div></div></div>
-        <div class="rule-block"><div class="rule-num">L4</div><div class="rule-content"><div class="rule-title">Implication communautaire</div><div class="rule-text">Les personnages légaux sont encouragés à participer à la vie communautaire : événements, commerce, interactions sociales qui enrichissent le serveur.</div></div></div>
-      </div>
-    </div>
-
-    <!-- LEGAL MASSRP -->
-    <div class="page" id="page-legal-massrp">
-      <div class="page-header">
-        <div class="page-category">Légal › MassRP</div>
-        <div class="page-title"><span>Mass</span>RP</div>
-        <div class="page-intro">Les règles encadrant les événements légaux impliquant un grand nombre de joueurs.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Règles MassRP Légal</div>
-        <div class="rule-block"><div class="rule-num">M1</div><div class="rule-content"><div class="rule-title">Autorisation préalable</div><div class="rule-text">Tout événement légal rassemblant plus de 10 joueurs doit faire l'objet d'une demande d'autorisation auprès du staff via ticket, 24h à l'avance.</div></div></div>
-        <div class="rule-block"><div class="rule-num">M2</div><div class="rule-content"><div class="rule-title">Organisation structurée</div><div class="rule-text">Un responsable doit être désigné pour chaque MassRP légal. Il est le point de contact avec le staff pendant toute la durée de l'événement.</div></div></div>
-        <div class="rule-block"><div class="rule-num">M3</div><div class="rule-content"><div class="rule-title">Interdiction de débordement</div><div class="rule-text">Un MassRP légal ne peut en aucun cas dégénérer en émeute ou acte illégal prémédité. Toute dérive sera sanctionnée.</div></div></div>
-      </div>
-    </div>
-
-    <!-- LEGAL ENTREPRISE -->
-    <div class="page" id="page-legal-entreprise">
-      <div class="page-header">
-        <div class="page-category">Légal › Entreprise</div>
-        <div class="page-title">Gestion <span>Entreprise</span></div>
-        <div class="page-intro">Tout ce qu'il faut savoir pour créer et gérer une entreprise RP sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Création & Règles</div>
-        <div class="rule-block"><div class="rule-num">E1</div><div class="rule-content"><div class="rule-title">Dossier de création</div><div class="rule-text">Pour ouvrir une entreprise RP, un dossier complet (nom, activité, background, financement) doit être déposé via ticket. La validation est soumise à approbation staff.</div></div></div>
-        <div class="rule-block"><div class="rule-num">E2</div><div class="rule-content"><div class="rule-title">Activité régulière</div><div class="rule-text">Une entreprise doit être active pour rester validée. En cas d'inactivité prolongée sans motif, elle pourra être supprimée après notification.</div></div></div>
-        <div class="rule-block"><div class="rule-num">E3</div><div class="rule-content"><div class="rule-title">Pas de couverture illégale</div><div class="rule-text">Une entreprise légale ne peut pas servir de façade à des activités illégales. Si cela est découvert, l'entreprise est fermée et le propriétaire sanctionné.</div></div></div>
-        <div class="rule-block"><div class="rule-num">E4</div><div class="rule-content"><div class="rule-title">Recrutement RP</div><div class="rule-text">L'embauche d'employés doit se faire en jeu via une interaction RP. Les recrutements "hors RP" via Discord ou messages privés sont interdits.</div></div></div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         RÈGLEMENT ILLÉGAL
-    ════════════════════════════════════════════ -->
-    <div class="page" id="page-illegal">
-      <div class="page-header">
-        <div class="page-category">Wiki · Règlements</div>
-        <div class="page-title">Règlement <span>Illégal</span></div>
-        <div class="page-intro">Les règles encadrant les activités criminelles et illégales sur ACESTRA FA. Ces règles sont strictes — leur non-respect entraîne des sanctions lourdes.</div>
-      </div>
-      <div class="alert alert-danger">
-        <span class="alert-icon">!</span>
-        <div>Le roleplay illégal n'est accessible qu'aux joueurs maîtrisant les bases du RP. Tout abus des mécanismes illégaux à des fins de grief sera sanctionné sévèrement.</div>
-      </div>
-      <div class="cards-grid" style="margin-top:24px">
-        <div class="card" onclick="showPage('illegal-gen')"><div class="card-title">Principes Généraux</div><div class="card-desc">Règles fondamentales du RP illégal.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('illegal-org')"><div class="card-title">Organisations</div><div class="card-desc">Création et gestion d'une organisation criminelle.</div><div class="card-arrow">→</div></div>
-        <div class="card" onclick="showPage('illegal-events')"><div class="card-title">Events Illégaux</div><div class="card-desc">Règles des événements et opérations criminelles.</div><div class="card-arrow">→</div></div>
-      </div>
-    </div>
-
-    <!-- ILLEGAL GEN -->
-    <div class="page" id="page-illegal-gen">
-      <div class="page-header">
-        <div class="page-category">Illégal › Principes</div>
-        <div class="page-title">Principes <span>Généraux</span></div>
-        <div class="page-intro">Les règles de base applicables à tout roleplay illégal sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Règles Fondamentales</div>
-        <div class="rule-block"><div class="rule-num">I1</div><div class="rule-content"><div class="rule-title">Contexte RP obligatoire</div><div class="rule-text">Toute action illégale (braquage, deal, enlèvement) doit être précédée d'un contexte RP développé. On ne braque pas "parce qu'on a envie".</div></div></div>
-        <div class="rule-block"><div class="rule-num">I2</div><div class="rule-content"><div class="rule-title">Proportionnalité</div><div class="rule-text">La violence utilisée doit être proportionnelle à la situation. Il est interdit d'exécuter un joueur sans alternative RP si la situation ne l'exige pas.</div></div></div>
-        <div class="rule-block"><div class="rule-num">I3</div><div class="rule-content"><div class="rule-title">Prise d'otage</div><div class="rule-text">Pour prendre un otage, il doit y avoir un objectif RP clair (négociation, distraction, etc.). La durée maximale d'une prise d'otage est de 45 minutes sauf accord du joueur concerné.</div></div></div>
-        <div class="rule-block"><div class="rule-num">I4</div><div class="rule-content"><div class="rule-title">Discrétion criminelle</div><div class="rule-text">Un criminel doit maintenir un profil bas. Les activités illégales ne se font pas ouvertement en zone très peuplée sans raison scénaristique valide.</div></div></div>
-        <div class="rule-block"><div class="rule-num">I5</div><div class="rule-content"><div class="rule-title">Conséquences acceptées</div><div class="rule-text">Jouer un personnage criminel implique d'accepter les conséquences RP (arrestation, représailles). Ne pas tenter de fuir les conséquences via des moyens HRP.</div></div></div>
-      </div>
-    </div>
-
-    <!-- ILLEGAL ORG -->
-    <div class="page" id="page-illegal-org">
-      <div class="page-header">
-        <div class="page-category">Illégal › Organisations</div>
-        <div class="page-title">Organisation <span>Criminelle</span></div>
-        <div class="page-intro">Règles relatives à la création et à la gestion des organisations criminelles sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Créer une Organisation</div>
-        <div class="org-card">
-          <div class="org-name">CONDITIONS D'ACCÈS</div>
-          <div class="org-text">Pour créer une organisation criminelle, il faut un minimum de 5 membres actifs, un dossier de création complet (histoire, territoire, activités) et une validation du staff. Les membres fondateurs doivent avoir au moins 30 heures de jeu sur le serveur.</div>
-        </div>
-        <div class="org-card">
-          <div class="org-name">TERRITOIRE</div>
-          <div class="org-text">Chaque organisation peut revendiquer un territoire RP. Les conflits de territoire doivent être réglés via des scènes RP encadrées. Il est interdit de "spam-tuer" dans un territoire pour le défendre.</div>
-        </div>
-        <div class="org-card">
-          <div class="org-name">GUERRE D'ORGANISATIONS</div>
-          <div class="org-text">Une guerre entre deux organisations doit être déclarée via ticket et validée par le staff. Des règles d'engagement spécifiques sont définies pour chaque conflit. Les zones vertes restent neutres.</div>
-        </div>
-        <div class="org-card">
-          <div class="org-name">DISSOLUTION</div>
-          <div class="org-text">Une organisation dont l'activité est inexistante pendant 2 semaines ou qui ne respecte pas le règlement peut être dissoute par le staff. Ses membres peuvent rejoindre d'autres organisations.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ILLEGAL EVENTS -->
-    <div class="page" id="page-illegal-events">
-      <div class="page-header">
-        <div class="page-category">Illégal › Events</div>
-        <div class="page-title">Events <span>Illégaux</span></div>
-        <div class="page-intro">Les règles encadrant les opérations criminelles d'envergure sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Types d'Events</div>
-        <div class="rule-block"><div class="rule-num">EV1</div><div class="rule-content"><div class="rule-title">Braquages</div><div class="rule-text">Les braquages de banques et commerces nécessitent une planification RP en amont. Nombre max de participants : 6 côté criminel. Un otage minimum est requis pour les grandes banques.</div></div></div>
-        <div class="rule-block"><div class="rule-num">EV2</div><div class="rule-content"><div class="rule-title">Convois & Assassinats</div><div class="rule-text">Ce type d'opération doit être demandé au staff via ticket 12h à l'avance. Un contexte RP solide doit justifier l'opération.</div></div></div>
-        <div class="rule-block"><div class="rule-num">EV3</div><div class="rule-content"><div class="rule-title">Règlement de comptes</div><div class="rule-text">Les affrontements entre organisations doivent être scénarisés et ne pas dépasser le ratio 3vs3 sans accord préalable du staff pour les conflits armés en zone urbaine.</div></div></div>
-        <div class="rule-block"><div class="rule-num">EV4</div><div class="rule-content"><div class="rule-title">Après l'event</div><div class="rule-text">Après chaque event majeur, les participants sont tenus de jouer les conséquences RP (blessures, fuite, arrestation). Le "reset" immédiat après un event est interdit.</div></div></div>
-      </div>
-      <div class="alert alert-warn">
-        <span class="alert-icon">⚠</span>
-        <div>Les events illégaux de grande envergure (plus de 10 participants) doivent être coordonnés avec le staff pour assurer une expérience optimale pour tous les joueurs impliqués.</div>
-      </div>
-    </div>
-
-    <!-- ═══════════════════════════════════════════
-         SE CONNECTER
-    ════════════════════════════════════════════ -->
-    <div class="page" id="page-connect">
-      <div class="page-header">
-        <div class="page-category">Guide</div>
-        <div class="page-title">Se <span>Connecter</span></div>
-        <div class="page-intro">Deux méthodes pour rejoindre le serveur ACESTRA FA sur FiveM.</div>
-      </div>
-      <div class="method-card">
-        <div class="method-number">MÉTHODE 01</div>
-        <div class="method-title">Via la recherche FiveM</div>
-        <div class="step"><div class="step-n">1</div><div class="step-text">Lancez FiveM et cliquez sur <strong style="color:var(--text-primary)">Browse Servers</strong> / <strong style="color:var(--text-primary)">Jouer</strong></div></div>
-        <div class="step"><div class="step-n">2</div><div class="step-text">Dans la barre de recherche, tapez <span class="code-inline">ACESTRA FA</span></div></div>
-        <div class="step"><div class="step-n">3</div><div class="step-text">Cliquez sur le serveur dans la liste des résultats</div></div>
-        <div class="step"><div class="step-n">4</div><div class="step-text">Cliquez sur <strong style="color:var(--text-primary)">Se connecter</strong> pour rejoindre</div></div>
-      </div>
-      <div class="method-card">
-        <div class="method-number">MÉTHODE 02</div>
-        <div class="method-title">Via la console FiveM (Direct Connect)</div>
-        <div class="step"><div class="step-n">1</div><div class="step-text">Dans FiveM, appuyez sur <span class="code-inline">F8</span> pour ouvrir la console</div></div>
-        <div class="step"><div class="step-n">2</div><div class="step-text">Entrez la commande : <span class="code-inline">connect cfx.re/join/acestra</span></div></div>
-        <div class="step"><div class="step-n">3</div><div class="step-text">Validez et attendez la connexion au serveur</div></div>
-      </div>
-      <div class="alert alert-warn">
-        <span class="alert-icon">⚠</span>
-        <div>Si vous ne parvenez pas à vous connecter, vérifiez l'état des serveurs FiveM sur <strong style="color:var(--accent)">status.cfx.re</strong>. Le problème peut venir des serveurs Cfx.re et non d'ACESTRA FA.</div>
-      </div>
-    </div>
-
-    <!-- BUGS -->
-    <div class="page" id="page-bugs">
-      <div class="page-header">
-        <div class="page-category">Guide</div>
-        <div class="page-title">Résolution de <span>Bugs</span></div>
-        <div class="page-intro">Solutions aux problèmes les plus courants rencontrés sur ACESTRA FA.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Problèmes Courants</div>
-        <div class="rule-block"><div class="rule-num">BUG</div><div class="rule-content"><div class="rule-title">Impossible de se connecter au serveur</div><div class="rule-text">Vérifiez votre version de FiveM (doit être à jour), redémarrez le client, vérifiez l'état des serveurs Cfx.re sur status.cfx.re, et désactivez votre VPN si actif.</div></div></div>
-        <div class="rule-block"><div class="rule-num">BUG</div><div class="rule-content"><div class="rule-title">FPS bas / lag important</div><div class="rule-text">Videz le cache FiveM (dossier cache dans AppData), réduisez les paramètres graphiques et fermez les applications en arrière-plan.</div></div></div>
-        <div class="rule-block"><div class="rule-num">BUG</div><div class="rule-content"><div class="rule-title">Personnage bloqué / coincé</div><div class="rule-text">Utilisez la commande <span class="code-inline">/stuck</span> en jeu pour vous téléporter en lieu sûr. Si le problème persiste, ouvrez un ticket.</div></div></div>
-        <div class="rule-block"><div class="rule-num">BUG</div><div class="rule-content"><div class="rule-title">Perte d'inventaire</div><div class="rule-text">Ne reconnectez pas immédiatement. Prenez une capture d'écran de votre inventaire vide et ouvrez un ticket avec la date et l'heure précise du bug.</div></div></div>
-        <div class="rule-block"><div class="rule-num">BUG</div><div class="rule-content"><div class="rule-title">Ressources manquantes (sons, textures)</div><div class="rule-text">Effacez entièrement le cache FiveM : <span class="code-inline">%localappdata%\FiveM\FiveM.app\cache</span> puis relancez FiveM.</div></div></div>
-      </div>
-      <div class="alert alert-info">
-        <span class="alert-icon">ℹ</span>
-        <div>Pour tout bug non listé ici, ouvrez un ticket sur notre Discord en décrivant précisément le problème, les étapes pour le reproduire et en joignant captures/vidéos si possible.</div>
-      </div>
-    </div>
-
-    <!-- BOUTIQUE -->
-    <div class="page" id="page-boutique">
-      <div class="page-header">
-        <div class="page-category">Guide</div>
-        <div class="page-title">La <span>Boutique</span></div>
-        <div class="page-intro">Soutenez le serveur ACESTRA FA et débloquez des avantages exclusifs via notre boutique.</div>
-      </div>
-      <div class="section">
-        <div class="section-title">Grades & Avantages</div>
-        <div class="boutique-grid">
-          <div class="boutique-item">
-            <div class="boutique-emoji">⭐</div>
-            <div class="boutique-name">SUPPORTER</div>
-            <div class="boutique-price">GRADE GRATUIT</div>
-          </div>
-          <div class="boutique-item">
-            <div class="boutique-emoji">💎</div>
-            <div class="boutique-name">VIP SILVER</div>
-            <div class="boutique-price">5€ / mois</div>
-          </div>
-          <div class="boutique-item">
-            <div class="boutique-emoji">👑</div>
-            <div class="boutique-name">VIP GOLD</div>
-            <div class="boutique-price">10€ / mois</div>
-          </div>
-          <div class="boutique-item">
-            <div class="boutique-emoji">🚗</div>
-            <div class="boutique-name">VÉHICULE</div>
-            <div class="boutique-price">Dès 3€</div>
-          </div>
-          <div class="boutique-item">
-            <div class="boutique-emoji">✏️</div>
-            <div class="boutique-name">CHANGEMENT NOM</div>
-            <div class="boutique-price">2€</div>
-          </div>
-          <div class="boutique-item">
-            <div class="boutique-emoji">🏠</div>
-            <div class="boutique-name">PROPRIÉTÉ</div>
-            <div class="boutique-price">Dès 5€</div>
-          </div>
-        </div>
-      </div>
-      <div class="alert alert-info">
-        <span class="alert-icon">ℹ</span>
-        <div>Les achats en boutique sont destinés à soutenir le serveur. Aucun avantage pay-to-win n'est disponible — tous les items de gameplay s'obtiennent en jeu. Pour accéder à la boutique complète, rendez-vous sur notre Discord.</div>
-      </div>
-      <div class="alert alert-warn">
-        <span class="alert-icon">⚠</span>
-        <div>Les achats sont définitifs et non-remboursables. En cas de bannissement, les grades achetés ne sont pas remboursés. Vérifiez les conditions de vente avant tout achat.</div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</div><!-- /main -->
-
-<script>
-const pages = {
-  'home': 'Accueil',
-  'hrp': 'Règlement HRP',
-  'hrp-gen': 'HRP › Généralités',
-  'hrp-ticket': 'HRP › Tickets',
-  'hrp-sanction': 'HRP › Sanctions',
-  'hrp-discord': 'HRP › Discord',
-  'global': 'Règlement Global',
-  'lexique': 'Lexique RP',
-  'notions': 'Notions de Base',
-  'regles': 'Règles Basiques',
-  'legal': 'Règlement Légal',
-  'legal-gen': 'Légal › Principes',
-  'legal-massrp': 'Légal › MassRP',
-  'legal-entreprise': 'Légal › Entreprise',
-  'illegal': 'Règlement Illégal',
-  'illegal-gen': 'Illégal › Principes',
-  'illegal-org': 'Illégal › Organisations',
-  'illegal-events': 'Illégal › Events',
-  'connect': 'Se connecter',
-  'bugs': 'Résolution de bugs',
-  'boutique': 'Boutique'
-};
-
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-  const page = document.getElementById('page-' + id);
-  if (page) page.classList.add('active');
-
-  const navItem = document.querySelector(`[onclick="showPage('${id}')"]`);
-  if (navItem) navItem.classList.add('active');
-
-  document.getElementById('bc-page').textContent = pages[id] || id;
-  window.scrollTo(0, 0);
-}
-</script>
 </body>
 </html>
